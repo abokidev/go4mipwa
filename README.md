@@ -1,6 +1,6 @@
 # go4mipwa
 
-A new Flutter project for an APP for Go4Mi which works in sync wuth the website that allows users to use personal shoppers to help them purchase products from their nearest stores
+A new Flutter project for an APP for Go4Mi which works in sync with the website that allows users to use personal shoppers to help them purchase products from their nearest stores
 
 ## Getting Started
 
