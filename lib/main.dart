@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
@@ -12,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: InAppWebViewExample(),
     );
   }
@@ -25,18 +28,19 @@ class InAppWebViewExample extends StatefulWidget {
 }
 
 class _InAppWebViewExampleState extends State<InAppWebViewExample> {
-  InAppWebViewController? _webViewController; // Nullable controller for null safety
+  InAppWebViewController?
+      _webViewController; // Nullable controller for null safety
   bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const SizedBox(
-          width: 100,
-          height: 50,
-        ),
-      ),
+      // appBar: AppBar(
+      //   title: const SizedBox(
+      //     width: 100,
+      //     height: 50,
+      //   ),
+      // ),
       body: WillPopScope(
         onWillPop: () async {
           // Check if WebView can go back
@@ -47,26 +51,31 @@ class _InAppWebViewExampleState extends State<InAppWebViewExample> {
           }
           return true; // Allow app to close if no more pages to go back to
         },
-        child: Stack(
-          children: [
-            InAppWebView(
-              initialUrlRequest: URLRequest(url: WebUri("https://mobile.go4mi.com/auth/login")),
-              onWebViewCreated: (InAppWebViewController controller) {
-                _webViewController = controller;
-              },
-              onLoadStart: (controller, url) {
-                setState(() {
-                  isLoading = true;
-                });
-              },
-              onLoadStop: (controller, url) {
-                setState(() {
-                  isLoading = false;
-                });
-              },
-            ),
-            isLoading ? const Center(child: CircularProgressIndicator()) : Container(),
-          ],
+        child: SafeArea(
+          child: Stack(
+            children: [
+              InAppWebView(
+                initialUrlRequest: URLRequest(
+                    url: WebUri("https://mobile.go4mi.com/auth/login")),
+                onWebViewCreated: (InAppWebViewController controller) {
+                  _webViewController = controller;
+                },
+                onLoadStart: (controller, url) {
+                  setState(() {
+                    isLoading = true;
+                  });
+                },
+                onLoadStop: (controller, url) {
+                  setState(() {
+                    isLoading = false;
+                  });
+                },
+              ),
+              isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : Container(),
+            ],
+          ),
         ),
       ),
     );
